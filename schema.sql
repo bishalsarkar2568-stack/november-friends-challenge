@@ -38,7 +38,7 @@ create table if not exists public.challenges (
 create table if not exists public.challenge_members (
   id uuid primary key default gen_random_uuid(),
   challenge_id uuid not null references public.challenges(id) on delete cascade,
-  user_id uuid not null references auth.users(id) on delete cascade,
+  user_id uuid not null references public.profiles(id) on delete cascade,
   joined_at timestamptz not null default now(),
   unique(challenge_id,user_id)
 );
@@ -65,7 +65,7 @@ create table if not exists public.activity_events (
   id uuid primary key default gen_random_uuid(),
   group_id uuid not null references public.groups(id) on delete cascade,
   challenge_id uuid references public.challenges(id) on delete cascade,
-  user_id uuid not null references auth.users(id) on delete cascade,
+  user_id uuid not null references public.profiles(id) on delete cascade,
   event_type text not null,
   metadata jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now()
